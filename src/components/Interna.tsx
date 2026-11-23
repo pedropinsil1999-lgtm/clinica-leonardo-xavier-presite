@@ -10,7 +10,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
 }
 export function BotaoAgendar({ label, tratamento, tipo, className = "", origem = "interna" }: { label: string; tratamento?: string; tipo?: Tipo; className?: string; origem?: string }) {
   const { open } = useAgendar();
-  return <button data-cursor="Agendar" onClick={() => open({ origem, tratamento, tipo })} className={`min-h-14 rounded-full bg-champagne-500 px-8 text-[0.92rem] font-medium tracking-wide text-forest-950 hover:bg-champagne-300 ${className}`}>{label}</button>;
+  return <button onClick={() => open({ origem, tratamento, tipo })} className={`min-h-14 rounded-full bg-champagne-500 px-8 text-[0.92rem] font-medium tracking-wide text-forest-950 hover:bg-champagne-300 ${className}`}>{label}</button>;
 }
 export function CTAMobile({ label, tratamento, tipo }: { label: string; tratamento?: string; tipo?: Tipo }) {
   const { open } = useAgendar(); const [show, setShow] = useState(false);

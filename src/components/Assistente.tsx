@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { gsap } from "@/lib/gsap";
 import { clinica, dentroDoHorario, proximaAbertura } from "@/data/clinica";
 import { porSlug } from "@/data/tratamentos";
 import { track } from "@/lib/track";
@@ -34,6 +33,7 @@ export default function Assistente({ opts, onClose }: { opts: OpenOpts | null; o
   const isOpen = !!opts;
   const up = (p: Partial<S>) => setS((o) => ({ ...o, ...p }));
 
+  const [shown, setShown] = useState(false);
   // abrir: restaura progresso ou aplica deep link / tratamento
   useEffect(() => {
     if (!opts) return;
@@ -44,28 +44,18 @@ export default function Assistente({ opts, onClose }: { opts: OpenOpts | null; o
     else if (opts.tipo) base = { ...base, tipo: opts.tipo, step: opts.tipo === "consulta" || opts.tipo === "avaliacao" ? 1 : 0 };
     setS(base);
     track("assistente_aberto", { origem: opts.origem });
-    const lenis = (window as unknown as { __lenis?: { stop(): void } }).__lenis; lenis?.stop();
-    const mm = window.matchMedia("(min-width: 768px)").matches;
-    gsap.fromTo(overlay.current, { opacity: 0 }, { opacity: 1, duration: 0.5 });
-    gsap.fromTo(panel.current, mm ? { xPercent: 100 } : { yPercent: 100 }, { xPercent: 0, yPercent: 0, duration: 0.8, ease: "expo.out" });
-    setTimeout(() => panel.current?.querySelector<HTMLElement>("button, input")?.focus(), 80);
+    document.documentElement.style.overflow = "hidden";
+    const r = requestAnimationFrame(() => requestAnimationFrame(() => setShown(true)));
+    const f = setTimeout(() => panel.current?.querySelector<HTMLElement>("button, input")?.focus(), 120);
+    return () => { cancelAnimationFrame(r); clearTimeout(f); document.documentElement.style.overflow = ""; };
   }, [opts]);
 
   useEffect(() => { if (isOpen) try { sessionStorage.setItem(KEY, JSON.stringify(s)); } catch {} }, [s, isOpen]);
-
-  // animação entre passos
-  useEffect(() => {
-    if (!isOpen || !body.current) return;
-    track("assistente_passo", { n: s.step + 1 });
-    gsap.fromTo(body.current, { x: 24, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: "power3.out" });
-    gsap.fromTo(body.current.querySelectorAll("[data-opt]"), { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, stagger: 0.04, ease: "power3.out" });
-  }, [s.step, s.tipo, isOpen]);
+  useEffect(() => { if (isOpen) track("assistente_passo", { n: s.step + 1 }); }, [s.step, isOpen]);
 
   const close = () => {
-    const mm = window.matchMedia("(min-width: 768px)").matches;
-    gsap.to(overlay.current, { opacity: 0, duration: 0.4 });
-    gsap.to(panel.current, { ...(mm ? { xPercent: 100 } : { yPercent: 100 }), duration: 0.6, ease: "power3.inOut", onComplete: () => {
-      onClose(); (window as unknown as { __lenis?: { start(): void } }).__lenis?.start(); lastFocus.current?.focus?.(); } });
+    setShown(false);
+    setTimeout(() => { onClose(); lastFocus.current?.focus?.(); }, 420);
   };
 
   // ESC + foco preso
@@ -106,7 +96,7 @@ export default function Assistente({ opts, onClose }: { opts: OpenOpts | null; o
   if (!isOpen) return null;
 
   const toggle = (arr: string[], v: string, max = 3) => arr.includes(v) ? arr.filter((x) => x !== v) : arr.length >= max ? arr : [...arr, v];
-  const chip = (on: boolean) => `min-h-12 rounded-[2px] border px-4 py-3 text-left text-[0.95rem] transition-colors ${on ? "border-champagne-500 bg-champagne-500 text-forest-950" : "border-champagne-500/30 text-sand-100 hover:border-champagne-500"}`;
+  const chip = (on: boolean) => `min-h-12 rounded-2xl border px-4 py-3 text-left text-[0.95rem] transition-colors ${on ? "border-champagne-500 bg-champagne-500 text-forest-950" : "border-champagne-500/30 text-sand-100 hover:border-champagne-500"}`;
   const pode = [
     !!s.tipo && (s.tipo !== "naosei" || !!recomendacao),
     s.interesses.length > 0,
@@ -131,9 +121,9 @@ export default function Assistente({ opts, onClose }: { opts: OpenOpts | null; o
   const horario = dentroDoHorario() ? "Respondemos em poucos minutos." : `Sua mensagem fica registrada e respondemos no próximo dia útil a partir das ${proximaAbertura()}.`;
 
   return (
-    <div className="fixed inset-0 z-[90]" role="dialog" aria-modal="true" aria-labelledby="ass-title" data-lenis-prevent>
-      <div ref={overlay} className="absolute inset-0 bg-forest-950/60 backdrop-blur-[2px]" onClick={close} />
-      <div ref={panel} className="grain absolute inset-0 flex flex-col bg-forest-900 text-sand-100 md:left-auto md:w-[520px]">
+    <div className="fixed inset-0 z-[90]" role="dialog" aria-modal="true" aria-labelledby="ass-title">
+      <div ref={overlay} className={`absolute inset-0 bg-forest-950/70 transition-opacity duration-400 ${shown ? "opacity-100" : "opacity-0"}`} onClick={close} />
+      <div ref={panel} className={`absolute inset-x-0 bottom-0 top-3 flex flex-col rounded-t-[2rem] bg-forest-900 text-sand-100 shadow-2xl transition-transform duration-500 ease-[cubic-bezier(.16,1,.3,1)] md:inset-y-0 md:left-auto md:right-0 md:top-0 md:w-[520px] md:rounded-l-[2rem] md:rounded-tr-none ${shown ? "translate-x-0 translate-y-0" : "translate-y-full md:translate-x-full md:translate-y-0"}`}>
         <header className="flex items-center justify-between px-6 pt-6 md:px-8">
           <p id="ass-title" className="eyebrow text-champagne-500">{s.step < 4 ? `Agendar · passo ${s.step + 1} de 4` : "Mensagem pronta"}</p>
           <button onClick={close} className="grid h-12 w-12 place-items-center rounded-full border border-champagne-500/30 hover:border-champagne-500" aria-label="Fechar">
@@ -142,7 +132,7 @@ export default function Assistente({ opts, onClose }: { opts: OpenOpts | null; o
         </header>
         <div className="mx-6 mt-5 h-px bg-champagne-500/20 md:mx-8"><div className="h-px bg-champagne-500 transition-[width] duration-700" style={{ width: `${Math.min(s.step + 1, 4) * 25}%` }} /></div>
 
-        <div ref={body} className="flex-1 overflow-y-auto px-6 pb-8 pt-8 md:px-8" aria-live="polite">
+        <div ref={body} key={`${s.step}-${s.tipo ?? ""}`} className="step-in flex-1 overflow-y-auto overscroll-contain px-6 pb-8 pt-8 md:px-8" aria-live="polite">
           {s.step === 0 && (<>
             <h2 className="display h-md text-ivory">O que você <em className="text-champagne-500">procura?</em></h2>
             <div className="mt-8 grid gap-3">
@@ -165,7 +155,7 @@ export default function Assistente({ opts, onClose }: { opts: OpenOpts | null; o
                   {[["sim", "Sim"], ["nao", "Não"]].map(([v, l]) => (<button key={v} data-opt className={chip(s.tri2 === v)} onClick={() => up({ tri2: v })}>{l}</button>))}
                 </div>
                 {recomendacao && (
-                  <div className="mt-6 border border-champagne-500/40 p-5">
+                  <div className="mt-6 rounded-3xl border border-champagne-500/40 p-5">
                     <p className="text-sm text-champagne-300">Sugestão para começar</p>
                     <p className="mt-1 font-serif text-2xl">{LABEL[recomendacao]}</p>
                     <p className="mt-2 text-sm opacity-75">Isso não substitui avaliação médica.</p>
@@ -201,26 +191,26 @@ export default function Assistente({ opts, onClose }: { opts: OpenOpts | null; o
           {s.step === 3 && (<>
             <h2 className="display h-md text-ivory">Quase <em className="text-champagne-500">pronto.</em></h2>
             <label className="mt-8 block text-sm text-champagne-300" htmlFor="ass-nome">Seu nome</label>
-            <input id="ass-nome" data-opt value={s.nome} onChange={(e) => up({ nome: e.target.value, msg: undefined })} autoComplete="given-name" className="mt-2 h-12 w-full border-b border-champagne-500/40 bg-transparent font-serif text-2xl outline-none focus:border-champagne-500" />
+            <input id="ass-nome" data-opt value={s.nome} onChange={(e) => up({ nome: e.target.value, msg: undefined })} autoComplete="given-name" className="mt-2 h-14 w-full rounded-2xl border border-champagne-500/40 bg-forest-950/40 px-4 font-serif text-2xl outline-none focus:border-champagne-500" />
             <label className="mt-6 block text-sm text-champagne-300" htmlFor="ass-tel">Seu WhatsApp (opcional, só para retorno)</label>
-            <input id="ass-tel" data-opt value={s.tel} onChange={(e) => up({ tel: e.target.value, msg: undefined })} inputMode="tel" autoComplete="tel" className="mt-2 h-12 w-full border-b border-champagne-500/40 bg-transparent text-lg outline-none focus:border-champagne-500" />
+            <input id="ass-tel" data-opt value={s.tel} onChange={(e) => up({ tel: e.target.value, msg: undefined })} inputMode="tel" autoComplete="tel" className="mt-2 h-14 w-full rounded-2xl border border-champagne-500/40 bg-forest-950/40 px-4 text-lg outline-none focus:border-champagne-500" />
             <label data-opt className="mt-6 flex cursor-pointer items-start gap-3 text-sm opacity-90">
               <input type="checkbox" checked={s.aceite} onChange={(e) => up({ aceite: e.target.checked })} className="mt-1 h-5 w-5 accent-[#C8B08A]" />
               <span>Concordo em enviar estes dados à clínica pelo WhatsApp. Nada fica salvo neste site. <a href="/privacidade/" className="ulink text-champagne-300" target="_blank">Privacidade</a></span>
             </label>
             <details data-opt className="mt-8 border-t hairline pt-5" open>
               <summary className="cursor-pointer text-sm text-champagne-300">Veja o que vamos enviar (você pode editar)</summary>
-              <textarea value={s.msg ?? mensagem} onChange={(e) => up({ msg: e.target.value })} rows={9} aria-label="Mensagem para a clínica" className="mt-3 w-full resize-none rounded-[2px] border border-champagne-500/25 bg-forest-950/50 p-4 font-mono text-[0.8rem] leading-relaxed outline-none focus:border-champagne-500" />
+              <textarea value={s.msg ?? mensagem} onChange={(e) => up({ msg: e.target.value })} rows={9} aria-label="Mensagem para a clínica" className="mt-3 w-full resize-none rounded-2xl border border-champagne-500/25 bg-forest-950/50 p-4 font-mono text-[0.8rem] leading-relaxed outline-none focus:border-champagne-500" />
             </details>
           </>)}
 
           {s.step === 4 && (<>
             <h2 className="display h-md text-ivory">Mensagem <em className="text-champagne-500">pronta.</em></h2>
             <p className="lead mt-4 opacity-85">{horario}</p>
-            <div className="mt-8 border border-champagne-500/30 p-5">
+            <div className="mt-8 rounded-3xl border border-champagne-500/30 p-5">
               <p className="text-sm text-champagne-300">Não abriu o WhatsApp?</p>
               <p className="mt-1">Envie para <a className="ulink" href={`tel:+${clinica.whatsapp}`}>{clinica.telefone}</a></p>
-              <button className="mt-4 min-h-12 border border-champagne-500 px-5 text-sm hover:bg-champagne-500 hover:text-forest-950"
+              <button className="mt-4 min-h-12 rounded-full border border-champagne-500 px-5 text-sm hover:bg-champagne-500 hover:text-forest-950"
                 onClick={async () => { try { await navigator.clipboard.writeText(s.msg ?? mensagem); setCopiado(true); } catch {} }}>{copiado ? "Copiada ✓" : "Copiar mensagem"}</button>
             </div>
             <div className="mt-6">
@@ -241,9 +231,9 @@ export default function Assistente({ opts, onClose }: { opts: OpenOpts | null; o
             <button onClick={() => up({ step: Math.max(0, s.step - 1) })} disabled={s.step === 0} className="min-h-12 px-2 text-sm opacity-80 disabled:opacity-0">← Voltar</button>
             {s.step < 3 ? (
               <button disabled={!pode} onClick={() => up({ step: s.step + 1, ...(s.step === 0 && s.tipo === "naosei" && recomendacao ? { tipo: recomendacao } : {}) })}
-                className="min-h-12 bg-champagne-500 px-7 text-sm font-medium tracking-wide text-forest-950 transition-opacity disabled:opacity-30">Continuar</button>
+                className="min-h-12 rounded-full bg-champagne-500 px-7 text-sm font-medium tracking-wide text-forest-950 transition-opacity disabled:opacity-30">Continuar</button>
             ) : (
-              <button disabled={!pode} onClick={enviar} className="min-h-12 bg-champagne-500 px-6 text-sm font-medium tracking-wide text-forest-950 disabled:opacity-30">Enviar pelo WhatsApp</button>
+              <button disabled={!pode} onClick={enviar} className="min-h-12 rounded-full bg-champagne-500 px-6 text-sm font-medium tracking-wide text-forest-950 disabled:opacity-30">Enviar pelo WhatsApp</button>
             )}
           </footer>
         )}

@@ -30,9 +30,9 @@ export function Lockup({ className, color = "currentColor", vertical = false }: 
 }
 export function Seal({ className, color = "#C8B08A" }: P) {
   return (
-    <svg viewBox="0 0 200 200" className={className} aria-hidden="true">
+    <svg viewBox="0 0 200 200" className={`spin-slow ${className ?? ""}`} aria-hidden="true">
       <defs><path id="sealc" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0" /></defs>
-      <g className="spin-slow" style={{ transformOrigin: "100px 100px" }}>
+      <g>
         <text fill={color} fontSize="12" fontFamily="var(--font-hanken)" textLength="486" lengthAdjust="spacing">
           <textPath href="#sealc">DR. LEONARDO XAVIER · DERMATOLOGIA E ESTÉTICA ·</textPath>
         </text>

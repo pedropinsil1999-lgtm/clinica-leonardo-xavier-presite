@@ -4,8 +4,8 @@ import "./globals.css";
 import { PRESITE } from "@/data/clinica";
 import Providers from "@/components/Providers";
 
-const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: ["300", "400", "500"], style: ["normal", "italic"], variable: "--font-cormorant", display: "swap" });
-const hanken = Hanken_Grotesk({ subsets: ["latin"], weight: ["300", "400", "500", "600"], variable: "--font-hanken", display: "swap" });
+const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: ["300", "400"], style: ["normal", "italic"], variable: "--font-cormorant", display: "swap" });
+const hanken = Hanken_Grotesk({ subsets: ["latin"], variable: "--font-hanken", display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://drleonardoxavier.com.br"), // TODO: domínio definitivo

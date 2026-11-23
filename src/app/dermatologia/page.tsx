@@ -5,14 +5,14 @@ const queixas = [["Manchas", "Melasma, manchas de sol e tom irregular."], ["Acne
 export default function Page() {
   return (
     <Shell>
-      <section data-theme="dark" className="grain bg-forest-950 px-5 pb-20 pt-36 text-sand-100 md:px-[6vw] md:pt-44">
+      <section data-theme="dark" className="bg-flow px-5 pb-20 pt-36 text-sand-100 md:px-[6vw] md:pt-44">
         <p className="eyebrow text-champagne-500">Consulta dermatológica</p>
-        <h1 data-rv="lines" className="display h-xl mt-8 max-w-[14ch]">Cuidar da <em className="text-champagne-500">saúde da pele.</em></h1>
+        <h1 data-rv="fade" className="display h-xl mt-8 max-w-[14ch]">Cuidar da <em className="text-champagne-500">saúde da pele.</em></h1>
         <p data-rv="fade" className="lead mt-6 max-w-xl text-sand-100/80">Diagnóstico, tratamento e acompanhamento. A base de qualquer cuidado com a pele, inclusive estético.</p>
         <div className="mt-10 hidden md:block"><BotaoAgendar label="Agendar consulta" tipo="consulta" /></div>
       </section>
-      <section data-theme="light" className="bg-ivory px-5 py-20 text-ink md:px-[6vw] md:py-28">
-        <h2 data-rv="lines" className="display h-lg">Queixas <em className="text-forest-700">comuns.</em></h2>
+      <section data-theme="light" className="sec-r bg-ivory px-5 py-20 text-ink md:px-[6vw] md:py-28">
+        <h2 data-rv="fade" className="display h-lg">Queixas <em className="text-forest-700">comuns.</em></h2>
         <div className="mt-12 grid gap-px bg-ink/10 sm:grid-cols-2 lg:grid-cols-3">
           {queixas.map(([t, d]) => <div key={t} data-rv="fade" className="bg-ivory p-8"><h3 className="font-serif text-3xl">{t}</h3><p className="mt-3 text-ink/75">{d}</p></div>)}
         </div>

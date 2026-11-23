@@ -42,3 +42,15 @@ A11y restante: as palavras do Manifesto começam em 15% de opacidade (efeito de 
 Notas finais: Design 8 · Usabilidade 8 · Criatividade 8 · Conteúdo 7
 
 **Alvos não atingidos (honesto):** Performance mobile 90+ e LCP simulado < 2,5 s. O gargalo é o JS da dobra (~175 kB: Next + React + GSAP) sob a simulação de 4G do Lighthouse. Próximos passos: carregar SplitText/ScrollTrigger sob demanda, separar o Assistente em `dynamic()` e medir em produção no Netlify (CDN + Brotli costumam render 10 a 20 pontos). Conteúdo fica em 7 até entrarem fotos e vídeos reais.
+
+## Rodada 5: refatoração de performance (feedback do cliente: "travado", frase cortada, cantos quadrados)
+Causas: shader WebGL contínuo, Lenis (scroll sequestrado), granulado com `mix-blend-mode` + feTurbulence, `blur(120px)`, `filter` no iframe do mapa, máscaras do SplitText (cortavam o "g" e o "ç" da headline), ScrollTrigger com pin e muitos scrubs, preloader atrasando tudo, máscara + parallax na foto.
+Feito:
+- Removidos GSAP, Lenis, WebGL, cursor customizado, preloader e transição de página. Movimento agora é só CSS (`opacity`/`transform`) + IntersectionObserver. Scroll nativo.
+- Fundo Skin Flow virou textura estática (`fundo-escuro.webp`, 10 kB). Brilho que segue o cursor só em desktop com mouse (1 transform por quadro).
+- Foto da hero: dimensão explícita, sem máscara, sem filtro, sem animação, `sizes` por altura; no celular carrega a versão 960w.
+- Mapa só carrega ao clicar. Tratamentos e galeria em carrossel nativo com snap (sem pin). Assistente carregado sob demanda (`dynamic`).
+- Imagens com variantes 480w. Fontes reduzidas (Cormorant 300/400 + itálico 400, Hanken variável).
+- Cantos arredondados em cards, chips, inputs, painel do assistente, FAQ e seções empilhadas.
+- Headline: sem máscara, `line-height` 1.06, padding no itálico.
+Resultados: JS da home 175 → 122 kB. Lighthouse mobile: Performance 89–93 (antes 67), Acessibilidade 96, Boas práticas 100, TBT 80–210 ms (antes 800–4000), CLS 0, Speed Index 0,8 s. Rolagem completa com CPU 6x mais lenta: 60 fps, 0 quadros lentos.

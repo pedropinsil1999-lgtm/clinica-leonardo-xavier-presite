@@ -11,7 +11,7 @@
 - Saída: 640/960/1400 em AVIF + WebP com alfa, `<picture>` com `fetchpriority="high"`, preload e `width/height` (CLS 0,002).
 - Entrada: o recorte **não** usa clip-path de revelação, porque esconder o elemento de LCP adiaria a métrica. Ele "acorda" de blur + escala sob o preloader. A revelação por máscara ficou na palavra XAVIER e na headline.
 
-## Fundo Skin Flow
+## Fundo Skin Flow (ATUALIZADO na rodada 5: textura estática, sem WebGL)
 - WebGL2 puro (sem OGL), fragment shader com simplex 3D + fbm, isolinhas com `fwidth` (antialias), deformação de "pressão" no cursor, onda no toque, eixo z ligado ao scroll.
 - 0,75x da resolução, DPR máx. 1,75, só desenha visível (IntersectionObserver), pausa com aba oculta, teto de 45 fps se o frame médio passar de 24 ms. Fallback canvas 2D.
 - Performance: desenha 1 quadro estático em idle e **só anima após a primeira interação** (mouse, toque, scroll, tecla). Isso cortou o TBT de laboratório de ~4 s para ~0,8 s.

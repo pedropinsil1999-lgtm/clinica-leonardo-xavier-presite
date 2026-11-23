@@ -5,7 +5,7 @@ export const metadata: Metadata = { title: "Privacidade e LGPD", description: "C
 export default function Page() {
   return (
     <Shell>
-      <section data-theme="light" className="bg-ivory px-5 pb-24 pt-36 text-ink md:px-[6vw] md:pt-44">
+      <section data-theme="light" className="sec-r bg-ivory px-5 pb-24 pt-36 text-ink md:px-[6vw] md:pt-44">
         <div className="mx-auto max-w-3xl space-y-6 text-ink/85">
           <h1 className="display h-lg text-ink">Privacidade e <em className="text-forest-700">LGPD</em></h1>
           <p className="text-sm text-ink/70">[TODO jurídico] Texto-base. Revisar com assessoria antes de publicar.</p>

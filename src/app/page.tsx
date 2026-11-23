@@ -1,6 +1,5 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
-import Preloader from "@/components/Preloader";
 import Reveals from "@/components/Reveals";
 import { Marquee, Manifesto, Portas, Tratamentos, Tecnologia, PrimeiraConsulta } from "@/components/Home1";
 import { Sobre, Clinica, Aprenda, Duvidas, Avaliacoes, CTAFinal, Footer } from "@/components/Home2";
@@ -15,7 +14,6 @@ const schema = {
 export default function Home() {
   return (
     <>
-      <Preloader />
       <Header />
       <main>
         <Hero /><Marquee /><Manifesto /><Portas /><Tratamentos /><Tecnologia /><PrimeiraConsulta /><Sobre /><Clinica /><Aprenda /><Duvidas /><Avaliacoes /><CTAFinal />
