@@ -87,3 +87,10 @@ Erros corrigidos: (1) a foto estava recortada DENTRO do arco (cabeça cortada) q
 - A mensagem é escrita em primeira pessoa: o cliente se apresenta e relata a triagem ("Olá! Meu nome é Maria. Vim pelo site e gostaria de agendar... O que me interessa: ... Será a minha primeira vez... Prefiro à tarde, nos dias: terça e quinta... Fico no aguardo e agradeço desde já! (Ref. site #XXXX)"). Texto neutro quanto a gênero.
 - Pinta/lesão que mudou vira uma frase de prioridade na mensagem.
 - Testado ponta a ponta (estética e consulta/urgente): destino wa.me/5524992482326 e botão desabilitado até haver nome.
+
+## Rodada 11: acabamento da hero
+1. Números em destaque: Cormorant com algarismos alinhados (`lining-nums`, antes ficavam "old-style", parecendo letras) e estrela em SVG no lugar do glifo do sistema. Regra global `font-variant-numeric: lining-nums`.
+2. Emenda hero → seção de baixo: entalhe (semicírculo com filetes côncavos) no topo da faixa escura, com setinha dupla animada (translate + opacity, escalonada); clique rola até o manifesto. A base da hero funde em sólido para o entalhe casar com o fundo. No desktop a foto termina exatamente na emenda.
+3. Moldura "noite": gradiente verde-noite, estrelas que cintilam, brilho jade à deriva, halo champagne que respira atrás dele, grão. Foto maior (arco 88% da altura, cabeça passa do topo), brilho suave ao redor da silhueta e `drop-shadow` estático.
+4. Botão "Por onde começar?": noite com borda de luz giratória (conic-gradient rotacionado), estrelas, brilho jade deslizante, reflexo periódico, anel pulsando no "?" e seta que balança. Tudo só `transform`/`opacity`.
+Verificação: 7 larguras sem sobreposição nem scroll horizontal; `prefers-reduced-motion` desliga todas as animações novas; celular simulado com CPU 6x: 16,7 ms/quadro médio.

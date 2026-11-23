@@ -14,6 +14,9 @@ export function Marquee() {
   return (
     <section data-theme="dark" className="marquee sec-r bg-flow z-10 overflow-hidden pb-8 pt-14 text-champagne-300 md:pt-20" aria-label="Especialidades">
       <FlowBg />
+      <a href="#manifesto" className="notch" aria-label="Rolar para baixo">
+        <svg width="22" height="24" viewBox="0 0 22 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path className="chev" d="M5 5l6 6 6-6" /><path className="chev" d="M5 12l6 6 6-6" /></svg>
+      </a>
       <div className="marquee-track flex w-max whitespace-nowrap">
         {[0, 1].map((k) => (
           <div key={k} className="flex items-center font-serif text-[clamp(2rem,4.4vw,4.4rem)] font-light italic" aria-hidden={k === 1}>
@@ -29,7 +32,7 @@ export function Manifesto() {
   const partes: [string, boolean][] = [["Pele é saúde antes de ser estética. Por isso toda avaliação começa por ", false], ["entender você,", true], [" com critério médico e tecnologia de ponta.", false]];
   let n = 0;
   return (
-    <section data-theme="light" className="sec-r bg-ivory px-5 pb-24 pt-16 text-ink md:px-[6vw] md:pb-36 md:pt-24">
+    <section id="manifesto" data-theme="light" className="sec-r bg-ivory px-5 pb-24 pt-16 text-ink md:px-[6vw] md:pb-36 md:pt-24">
       <p className="eyebrow mb-10 text-champagne-700">Nosso ponto de partida</p>
       <div className="grid gap-14 md:grid-cols-12">
         <p className="display h-lg md:col-span-8">
