@@ -1,0 +1,86 @@
+// TODO: validar todos os textos com a clínica. Sem marcas, sem promessa de resultado.
+export type Tratamento = {
+  slug: string; nome: string; tipo: "consulta" | "avaliacao"; resumo: string; arte: string;
+  paraQuem: string[]; comoFunciona: string; sessoes: string; cuidados: string[]; riscos: string;
+  faq: { q: string; a: string }[]; combina: string[]; chip: string;
+};
+export const tratamentos: Tratamento[] = [
+  {
+    slug: "consulta-dermatologica", nome: "Consulta dermatológica", tipo: "consulta", arte: "consulta", chip: "Outra queixa",
+    resumo: "Diagnóstico e cuidado da saúde da pele, cabelo e unhas.",
+    paraQuem: ["Manchas, acne, sensibilidade ou ressecamento", "Check-up de pele e pintas", "Quem quer entender a própria pele antes de qualquer procedimento"],
+    comoFunciona: "Conversa detalhada, exame da pele e, quando indicado, exames complementares. Você sai com um plano de cuidado explicado com clareza.",
+    sessoes: "Retorno conforme a necessidade de cada caso. [TODO]",
+    cuidados: ["Traga a lista de medicamentos e cremes que usa", "Leve exames anteriores, se tiver", "Evite maquiagem na região a ser avaliada"],
+    riscos: "A consulta não tem riscos. Tratamentos indicados depois dela têm indicações e contraindicações próprias, explicadas individualmente.",
+    faq: [{ q: "Quanto tempo dura?", a: "Em média [TODO] minutos." }],
+    combina: ["limpeza-de-pele", "laser"],
+  },
+  {
+    slug: "toxina-botulinica", nome: "Toxina botulínica", tipo: "avaliacao", arte: "toxina", chip: "Rugas e linhas de expressão",
+    resumo: "Suaviza linhas de expressão com dose e ponto definidos na avaliação.",
+    paraQuem: ["Linhas na testa, entre as sobrancelhas (glabela) e ao redor dos olhos", "Quem quer prevenir marcas de expressão sem perder naturalidade"],
+    comoFunciona: "Aplicação com agulha fina em pontos específicos, definidos a partir da sua expressão facial. O efeito aparece gradualmente nos dias seguintes.",
+    sessoes: "Duração do efeito varia de pessoa para pessoa. Intervalo definido em consulta. [TODO]",
+    cuidados: ["Evitar deitar e fazer atividade física intensa nas primeiras horas", "Não massagear a região", "Seguir as orientações recebidas"],
+    riscos: "Pode haver vermelhidão, pequenos hematomas ou dor de cabeça leve. Há contraindicações (como gestação e algumas doenças neuromusculares), avaliadas em consulta.",
+    faq: [{ q: "Vou ficar com aparência artificial?", a: "A dose e os pontos são definidos para preservar a expressão. A naturalidade é critério da avaliação." }],
+    combina: ["bioestimulador-de-colageno", "limpeza-de-pele"],
+  },
+  {
+    slug: "bioestimulador-de-colageno", nome: "Bioestimulador de colágeno", tipo: "avaliacao", arte: "bioestimulador", chip: "Firmeza e flacidez",
+    resumo: "Estimula a produção de colágeno para melhorar firmeza e qualidade da pele.",
+    paraQuem: ["Flacidez leve a moderada no rosto ou corpo", "Quem busca melhora gradual e progressiva"],
+    comoFunciona: "Aplicação de substância que estimula o próprio organismo a produzir colágeno. A resposta é gradual, ao longo de semanas.",
+    sessoes: "Número de sessões e intervalo definidos na avaliação. [TODO]",
+    cuidados: ["Seguir orientações de massagem quando indicadas", "Evitar exposição solar intensa", "Comparecer aos retornos"],
+    riscos: "Podem ocorrer inchaço, hematomas e sensibilidade local. Complicações raras e contraindicações são explicadas em consulta.",
+    faq: [{ q: "Quando aparece o efeito?", a: "É progressivo. O tempo varia de pessoa para pessoa e é explicado na avaliação." }],
+    combina: ["toxina-botulinica", "laser"],
+  },
+  {
+    slug: "limpeza-de-pele", nome: "Limpeza de pele", tipo: "avaliacao", arte: "limpeza", chip: "Limpeza de pele",
+    resumo: "Remove impurezas e ajuda no controle de cravos, oleosidade e textura.",
+    paraQuem: ["Cravos e poros obstruídos", "Oleosidade e textura irregular", "Manutenção de uma pele saudável"],
+    comoFunciona: "Higienização, preparo, extração cuidadosa e finalização calmante, adaptadas ao seu tipo de pele.",
+    sessoes: "Frequência indicada conforme o tipo de pele. [TODO]",
+    cuidados: ["Evitar maquiagem e sol no dia", "Usar protetor solar", "Não manipular a pele em casa"],
+    riscos: "Pode haver vermelhidão passageira. Peles com acne inflamada ou condições específicas precisam de avaliação antes.",
+    faq: [{ q: "Pode ser feita em pele com acne?", a: "Depende do quadro. Em alguns casos, a consulta dermatológica vem antes." }],
+    combina: ["consulta-dermatologica", "laser"],
+  },
+  {
+    slug: "laser", nome: "Laser", tipo: "avaliacao", arte: "laser", chip: "Laser",
+    resumo: "Tecnologias de luz para manchas, textura, poros e rejuvenescimento.",
+    paraQuem: ["Manchas e tom irregular", "Textura, poros e cicatrizes de acne", "Rejuvenescimento da pele"],
+    comoFunciona: "O tipo de laser e os parâmetros são escolhidos a partir do diagnóstico, do seu tipo de pele e da época do ano.",
+    sessoes: "Número de sessões varia conforme a indicação. [TODO]",
+    cuidados: ["Protetor solar rigoroso antes e depois", "Evitar sol nas semanas indicadas", "Hidratação conforme orientação"],
+    riscos: "Vermelhidão, sensibilidade e descamação temporárias são comuns. Há risco de manchas se os cuidados não forem seguidos; tudo é avaliado antes.",
+    faq: [{ q: "Pode fazer no verão?", a: "Alguns lasers sim, outros não. A escolha considera a época e a sua rotina." }],
+    combina: ["limpeza-de-pele", "bioestimulador-de-colageno"],
+  },
+  {
+    slug: "procedimentos-corporais", nome: "Procedimentos corporais", tipo: "avaliacao", arte: "corporais", chip: "Corpo (gordura localizada, estrias)",
+    resumo: "Cuidados para gordura localizada, estrias, flacidez e qualidade da pele do corpo.",
+    paraQuem: ["Gordura localizada", "Estrias e flacidez corporal", "Qualidade da pele do corpo"],
+    comoFunciona: "Combinação de tecnologias e procedimentos definida após avaliação presencial.",
+    sessoes: "Plano definido na avaliação. [TODO]",
+    cuidados: ["Hidratação e protetor solar", "Seguir o plano de sessões", "Manter hábitos indicados"],
+    riscos: "Cada técnica tem efeitos esperados e contraindicações próprias, explicados antes de qualquer sessão.",
+    faq: [{ q: "Substitui atividade física?", a: "Não. Os procedimentos complementam hábitos saudáveis." }],
+    combina: ["bioestimulador-de-colageno", "laser"],
+  },
+  {
+    slug: "cirurgia-dermatologica", nome: "Cirurgia dermatológica", tipo: "consulta", arte: "cirurgia", chip: "Check-up de pele e pintas",
+    resumo: "Remoção de pintas, cistos e lesões de pele, com análise quando indicada.",
+    paraQuem: ["Pintas ou lesões que mudaram", "Cistos e lesões benignas", "Retirada de lesões para análise"],
+    comoFunciona: "Procedimento ambulatorial com anestesia local, após consulta e indicação médica.",
+    sessoes: "Geralmente sessão única, com retorno para acompanhamento. [TODO]",
+    cuidados: ["Seguir a orientação de curativo", "Evitar esforço na região", "Comparecer ao retorno"],
+    riscos: "Como todo procedimento cirúrgico, há risco de sangramento, infecção e cicatriz. Explicado e avaliado antes.",
+    faq: [{ q: "Precisa de consulta antes?", a: "Sim. A indicação é sempre feita em consulta." }],
+    combina: ["consulta-dermatologica", "laser"],
+  },
+];
+export const porSlug = (s: string) => tratamentos.find((t) => t.slug === s);

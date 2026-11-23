@@ -1,0 +1,9 @@
+[build]
+  command = "npm run build"
+  publish = "out"
+[build.environment]
+  NEXT_PUBLIC_PRESITE = "true"
+[[headers]]
+  for = "/midia/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
