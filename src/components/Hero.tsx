@@ -4,7 +4,7 @@ import { preload } from "react-dom";
 import { useAgendar } from "./agendar";
 import { clinica } from "@/data/clinica";
 
-const SIZES = "(min-width: 768px) 42vw, 86vw";
+const SIZES = "(min-width: 768px) 36vw, 76vw";
 const SET = (e: string) => `/midia/dr-leonardo-640.${e} 640w, /midia/dr-leonardo-960.${e} 960w, /midia/dr-leonardo-1400.${e} 1400w`;
 const d = (s: string) => ({ "--d": s }) as React.CSSProperties;
 
@@ -39,10 +39,10 @@ export default function Hero() {
         <i className="n-p hw-p1"><b /></i><i className="n-p hw-p2"><b /></i>
         <div ref={glow} className="hero-cursor-glow" /><i className="n-grain" style={{ opacity: 0.14 }} />
       </div>
-      <div className="relative z-10 mx-auto grid h-full max-w-[1500px] items-center gap-8 px-5 pt-24 md:grid-cols-12 md:gap-4 md:px-[5vw] md:pt-16">
+      <div className="relative z-10 mx-auto grid h-full max-w-[1500px] items-center gap-8 px-5 pt-24 md:grid-cols-[minmax(0,1fr)_auto] md:gap-10 md:px-[5vw] md:pt-16">
         {/* texto */}
-        <div className="md:col-span-7 md:pb-16">
-          <h1 id="hero-title" className="display rise text-[2.5rem] leading-[1.06] text-forest-950 md:text-[clamp(3rem,5.4vw,6rem)]" style={d(".05s")}>
+        <div className="md:pb-16">
+          <h1 id="hero-title" className="display rise text-[2.5rem] leading-[1.06] text-forest-950 md:text-[clamp(2.6rem,4.6vw,5rem)]" style={d(".05s")}>
             Dermatologia que cuida,{" "}
             <span className="relative inline-block whitespace-nowrap">
               <em className="text-forest-700">com segurança.</em>
@@ -74,17 +74,15 @@ export default function Hero() {
           </button>
         </div>
 
-        {/* foto no arco */}
-        <div className="flex justify-center md:col-span-5 md:items-end md:justify-end md:self-end">
-          <div className="hero-arch-wrap">
-            <div className="hero-arch">
-              <div className="absolute left-1/2 top-[8%] h-[70%] w-[90%] -translate-x-1/2" style={{ background: "radial-gradient(closest-side, rgba(227,213,191,.38), transparent)" }} aria-hidden />
-              <picture>
-                <source type="image/avif" srcSet={SET("avif")} sizes={SIZES} />
-                <source type="image/webp" srcSet={SET("webp")} sizes={SIZES} />
-                <img src="/midia/dr-leonardo-960.webp" width={1526} height={2000} alt="Dr. Leonardo Xavier, médico, de jaleco branco e braços cruzados, sorrindo" fetchPriority="high" decoding="async" className="absolute bottom-0 left-1/2 h-[104%] w-auto max-w-none -translate-x-1/2" />
-              </picture>
-            </div>
+        {/* foto: o arco é só o FUNDO; o Dr. Leonardo fica POR CIMA, centralizado, sem recorte */}
+        <div className="flex justify-center md:justify-end md:self-end">
+          <div className="hero-fig">
+            <div className="hero-arch" aria-hidden />
+            <picture>
+              <source type="image/avif" srcSet={SET("avif")} sizes={SIZES} />
+              <source type="image/webp" srcSet={SET("webp")} sizes={SIZES} />
+              <img src="/midia/dr-leonardo-960.webp" width={1526} height={2000} alt="Dr. Leonardo Xavier, médico, de jaleco branco e braços cruzados, sorrindo" fetchPriority="high" decoding="async" />
+            </picture>
           </div>
         </div>
       </div>

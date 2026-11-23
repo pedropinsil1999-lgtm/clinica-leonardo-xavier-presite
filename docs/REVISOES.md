@@ -75,3 +75,9 @@ Resultado: Lighthouse celular Performance 91, A11y 96, Boas práticas 100, CLS 0
 - Seção seguinte (faixa de especialidades) virou escura com cantos arredondados, para contrastar com a hero clara.
 - Header começa em tema claro; logo menor em telas pequenas.
 - A "noite granulada" ficou no CSS (`.hero-night`), sem uso no momento.
+
+## Rodada 9: correção da hero (fidelidade à referência)
+Erros corrigidos: (1) a foto estava recortada DENTRO do arco (cabeça cortada) quando, na referência, o arco é só fundo e a pessoa fica por cima, centralizada; (2) o título invadia o arco em telas largas.
+- Arco agora é uma camada de fundo; a foto é uma camada separada, sem `overflow:hidden`, centralizada, com a cabeça no topo do arco.
+- Grid `1fr + auto` impede o texto de invadir a foto; título com `clamp(2.6rem, 4.6vw, 5rem)`.
+- Verificado por medição (getBoundingClientRect) em 1868, 1440, 1280, 1024, 768, 390 e 360 px: sem sobreposição e sem scroll horizontal.
