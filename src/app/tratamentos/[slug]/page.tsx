@@ -1,3 +1,4 @@
+import FlowBg from "@/components/FlowBg";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -19,6 +20,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   return (
     <Shell>
       <section data-theme="dark" className="bg-flow relative px-5 pb-20 pt-36 text-sand-100 md:px-[6vw] md:pt-44">
+      <FlowBg />
         <div className="grid items-end gap-12 md:grid-cols-12">
           <div className="md:col-span-7">
             <Link href="/#tratamentos" className="ulink text-sm text-champagne-300">← Tratamentos</Link>
@@ -26,7 +28,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
             <p data-rv="fade" className="lead mt-6 max-w-lg text-sand-100/80">{t.resumo}</p>
             <div data-rv="fade" className="mt-10 hidden md:block"><BotaoAgendar label={`Agendar avaliação de ${t.nome.toLowerCase()}`} tratamento={t.slug} /></div>
           </div>
-          <div className="md:col-span-4 md:col-start-9" data-rv="fade"><div className="arch aspect-[4/5]"><Img name={t.arte} alt="" priority /></div></div>
+          <div className="md:col-span-4 md:col-start-9" data-rv="fade"><div className="arch par aspect-[4/5]"><Img name={t.arte} alt="" priority /></div></div>
         </div>
       </section>
       <section data-theme="light" className="sec-r bg-ivory px-5 py-16 text-ink md:px-[6vw] md:py-24">

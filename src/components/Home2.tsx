@@ -4,6 +4,7 @@ import { useAgendar } from "./agendar";
 import { clinica } from "@/data/clinica";
 import Img from "./Img";
 import Magnetic from "./Magnetic";
+import FlowBg from "./FlowBg";
 import { Lockup, Seal } from "./Logo";
 
 export function Sobre() {
@@ -37,7 +38,7 @@ export function Sobre() {
 }
 
 export function Clinica() {
-  const fotos = ["espaco-1", "espaco-2", "espaco-3", "espaco-4", "espaco-5"];
+  const fotos = ["espaco-2", "espaco-3", "espaco-4", "espaco-5"];
   return (
     <section id="clinica" data-theme="light" className="sec-r cv bg-sand-100 pb-24 pt-20 text-ink md:pb-36 md:pt-36" aria-labelledby="cl-t">
       <div className="flex flex-col justify-between gap-6 px-5 md:flex-row md:items-end md:px-[6vw]">
@@ -48,9 +49,9 @@ export function Clinica() {
       <div className="no-sb mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-2 md:gap-5 md:px-[6vw]" tabIndex={0} aria-label="Galeria do espaço, deslize para os lados">
         {fotos.map((f, i) => (
           <figure key={f} className={`relative shrink-0 snap-start overflow-hidden rounded-3xl ${i % 2 ? "h-[44svh] w-[68vw] md:w-[28vw]" : "h-[54svh] w-[76vw] md:w-[34vw]"}`}>
-            <Img name={f} alt="" sizes="(min-width: 768px) 34vw, 76vw" />
-            {/* TODO: substituir por fotos reais do espaço (Instagram) com a mesma gradação */}
-            <figcaption className="absolute bottom-3 left-3 rounded-full bg-ivory/85 px-3 py-1 text-[0.65rem] uppercase tracking-[0.2em] text-ink/70">Foto do espaço · em produção</figcaption>
+            <div className="par h-full"><Img name={f} alt="" sizes="(min-width: 768px) 34vw, 76vw" /></div>
+            {/* TODO: substituir por fotos reais do espaço da clínica */}
+            <figcaption className="absolute bottom-3 left-3 rounded-full bg-ivory/85 px-3 py-1 text-[0.65rem] uppercase tracking-[0.2em] text-ink/70">Imagem ilustrativa</figcaption>
           </figure>
         ))}
       </div>
@@ -60,9 +61,10 @@ export function Clinica() {
 
 export function Aprenda() {
   // TODO: 3 a 5 reels do Instagram, sem áudio, com legenda em HTML. Hoje: cards temáticos com link para o perfil.
-  const temas = [["3 queixas que a limpeza de pele ajuda", "limpeza"], ["Rugas da glabela: o que são e como tratar", "toxina"], ["Bioestimulador: por que o resultado é gradual", "bioestimulador"], ["Laser e sol: o que muda no verão", "laser"]];
+  const temas = [["3 queixas que a limpeza de pele ajuda", "aprenda-1"], ["Rugas da glabela: o que são e como tratar", "aprenda-4"], ["Bioestimulador: por que o resultado é gradual", "aprenda-3"], ["Laser e sol: o que muda no verão", "aprenda-2"]];
   return (
     <section data-theme="dark" className="sec-r bg-flow cv px-5 pb-24 pt-20 text-sand-100 md:px-[6vw] md:pb-36 md:pt-36" aria-labelledby="ap-t">
+      <FlowBg />
       <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
         <div><p className="eyebrow text-champagne-500">Aprenda com o Dr. Leonardo</p>
           <h2 id="ap-t" data-rv="fade" className="display h-lg mt-6">Informação clara, <em className="text-champagne-500">sem exagero.</em></h2></div>
@@ -148,6 +150,7 @@ export function CTAFinal() {
   const [mapa, setMapa] = useState(false);
   return (
     <section data-theme="dark" className="sec-r bg-flow px-5 pb-16 pt-24 text-sand-100 md:px-[6vw] md:pt-44" aria-labelledby="cta-t">
+      <FlowBg />
       <div className="text-center">
         <h2 id="cta-t" data-rv="fade" className="display mx-auto max-w-[16ch] text-[clamp(2.7rem,7vw,7rem)]">Sua pele merece uma <em className="text-champagne-500">avaliação de verdade.</em></h2>
         <div className="mt-12 flex justify-center" data-rv="fade" data-d="0.1">
@@ -187,6 +190,7 @@ export function CTAFinal() {
 export function Footer() {
   return (
     <footer data-theme="dark" className="bg-flow px-5 pb-28 pt-4 text-sand-100/80 md:px-[6vw] md:pb-12">
+      <FlowBg />
       <div className="flex flex-col justify-between gap-10 border-t hairline pt-12 md:flex-row md:items-start">
         <div className="text-champagne-300"><Lockup /></div>
         <div className="grid gap-8 text-sm sm:grid-cols-3 md:gap-16">

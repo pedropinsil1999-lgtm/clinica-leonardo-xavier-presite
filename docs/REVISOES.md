@@ -54,3 +54,12 @@ Feito:
 - Cantos arredondados em cards, chips, inputs, painel do assistente, FAQ e seções empilhadas.
 - Headline: sem máscara, `line-height` 1.06, padding no itálico.
 Resultados: JS da home 175 → 122 kB. Lighthouse mobile: Performance 89–93 (antes 67), Acessibilidade 96, Boas práticas 100, TBT 80–210 ms (antes 800–4000), CLS 0, Speed Index 0,8 s. Rolagem completa com CPU 6x mais lenta: 60 fps, 0 quadros lentos.
+
+## Rodada 6: feedback "falta um tchan"
+- Fundo: a textura estática (baixa qualidade) deu lugar a 2 camadas SVG **vetoriais** de curvas de nível, movidas em sentidos opostos por CSS (`transform`, camada composta, sem repintura). Nítido em qualquer densidade de pixels.
+- Hero enxuta: título com sublinhado desenhado, 1 botão; prova social e "+10 anos" viraram chips flutuantes sobre a foto. Seal, parágrafo e link secundário removidos da hero.
+- Navbar com fundo sólido (verde na seção escura, marfim na clara) após 24 px de scroll.
+- Fotos de banco alocadas por sentido (portas, 7 tratamentos, tecnologia, galeria ilustrativa, "aprenda"), com parallax por scroll em CSS puro (`animation-timeline: view()`).
+- "Sem surpresas" virou stepper interativo: etapas tocáveis, cartão "Você / A gente", avanço automático com barra de progresso (só visível e sem interação), swipe no celular, botões anterior/próximo e CTA.
+- Carrossel de tratamentos com barra de progresso de rolagem.
+Resultado: Lighthouse celular Performance 91, A11y 96, Boas práticas 100, CLS 0, TBT 190 ms; rolagem a 60 fps com CPU 6x mais lenta.

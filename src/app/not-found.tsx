@@ -1,8 +1,10 @@
+import FlowBg from "@/components/FlowBg";
 import Link from "next/link";
 import { Monogram } from "@/components/Logo";
 export default function NotFound() {
   return (
     <main data-theme="dark" className="grid min-h-[100svh] place-items-center bg-flow px-5 text-center text-sand-100">
+      <FlowBg />
       <div>
         <Monogram className="mx-auto h-20 w-20 text-champagne-500" />
         <h1 className="display h-xl mt-8">Página <em className="text-champagne-500">não encontrada.</em></h1>

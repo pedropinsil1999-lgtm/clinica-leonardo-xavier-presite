@@ -1,3 +1,4 @@
+import FlowBg from "@/components/FlowBg";
 import type { Metadata } from "next";
 import { Shell, BotaoAgendar, CTAMobile } from "@/components/Interna";
 export const metadata: Metadata = { title: "Consulta dermatológica em Resende/RJ", description: "Consulta dermatológica com o Dr. Leonardo Xavier em Resende/RJ: manchas, acne, pele sensível, check-up de pintas." };
@@ -6,6 +7,7 @@ export default function Page() {
   return (
     <Shell>
       <section data-theme="dark" className="bg-flow px-5 pb-20 pt-36 text-sand-100 md:px-[6vw] md:pt-44">
+      <FlowBg />
         <p className="eyebrow text-champagne-500">Consulta dermatológica</p>
         <h1 data-rv="fade" className="display h-xl mt-8 max-w-[14ch]">Cuidar da <em className="text-champagne-500">saúde da pele.</em></h1>
         <p data-rv="fade" className="lead mt-6 max-w-xl text-sand-100/80">Diagnóstico, tratamento e acompanhamento. A base de qualquer cuidado com a pele, inclusive estético.</p>

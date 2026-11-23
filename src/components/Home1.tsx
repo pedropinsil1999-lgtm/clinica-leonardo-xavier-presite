@@ -1,10 +1,11 @@
 "use client";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useAgendar } from "./agendar";
 import { clinica } from "@/data/clinica";
 import { tratamentos } from "@/data/tratamentos";
 import Img from "./Img";
+import FlowBg from "./FlowBg";
 
 const Losango = () => <span aria-hidden className="mx-8 inline-block h-2 w-2 rotate-45 bg-champagne-500 align-middle" />;
 
@@ -61,12 +62,12 @@ export function Portas() {
         {portas.map((p, i) => (
           <article key={p.t} className="group" data-rv="fade" data-d={i * 0.1}>
             <button onClick={() => open({ origem: "portas", tipo: p.tipo })} className="arch relative block aspect-[4/5] w-full" aria-label={`${p.t}: agendar ${p.s.toLowerCase()}`}>
-              <Img name={p.arte} alt="" className="transition-transform duration-[1.8s] ease-out md:group-hover:scale-110" sizes="(min-width: 768px) 44vw, 92vw" />
-              <span className={`absolute inset-x-0 bottom-0 p-8 text-left md:p-10 ${i ? "text-sand-100" : "text-forest-900"}`}>
+              <span className="par block h-full"><Img name={p.arte} alt="" sizes="(min-width: 768px) 44vw, 92vw" /></span><span className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-transparent" />
+              <span className={`absolute inset-x-0 bottom-0 p-8 text-left md:p-10 text-sand-100`}>
                 <span className="eyebrow block opacity-80">{p.s}</span>
                 <span className="display mt-3 block text-[clamp(2.2rem,3.6vw,3.6rem)]">{p.t}</span>
               </span>
-              <span className={`absolute left-1/2 top-10 -translate-x-1/2 font-serif text-xl italic ${i ? "text-champagne-300" : "text-forest-700"}`}>0{i + 1}</span>
+              <span className="absolute left-1/2 top-10 -translate-x-1/2 font-serif text-xl italic text-champagne-300">0{i + 1}</span>
             </button>
             <div className="mt-6 flex items-start justify-between gap-6">
               <p className="max-w-sm text-ink/75">{p.d}</p>
@@ -81,9 +82,12 @@ export function Portas() {
 
 export function Tratamentos() {
   const track = useRef<HTMLDivElement>(null);
+  const bar = useRef<HTMLSpanElement>(null);
+  const onScroll = () => { const t = track.current!; const k = t.scrollLeft / Math.max(1, t.scrollWidth - t.clientWidth); bar.current!.style.transform = `scaleX(${0.18 + 0.82 * k})`; };
   const go = (d: number) => track.current?.scrollBy({ left: d * Math.min(420, innerWidth * 0.8), behavior: "smooth" });
   return (
     <section id="tratamentos" data-theme="dark" className="sec-r bg-flow-900 pb-24 pt-20 text-sand-100 md:pb-36 md:pt-32" aria-labelledby="tr-t">
+      <FlowBg />
       <div className="flex flex-col justify-between gap-8 px-5 md:flex-row md:items-end md:px-[6vw]">
         <div>
           <p className="eyebrow text-champagne-500">Tratamentos</p>
@@ -94,7 +98,7 @@ export function Tratamentos() {
           {[["←", -1, "Anterior"], ["→", 1, "Próximo"]].map(([l, d, a]) => <button key={a as string} onClick={() => go(d as number)} aria-label={a as string} className="grid h-14 w-14 place-items-center rounded-full border border-champagne-500/40 text-xl transition hover:bg-champagne-500 hover:text-forest-950">{l}</button>)}
         </div>
       </div>
-      <div ref={track} className="no-sb mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-2 md:px-[6vw]" style={{ scrollPaddingLeft: "1.25rem" }} tabIndex={0} aria-label="Lista de tratamentos, deslize para os lados">
+      <div ref={track} onScroll={onScroll} className="no-sb mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-2 md:px-[6vw]" style={{ scrollPaddingLeft: "1.25rem" }} tabIndex={0} aria-label="Lista de tratamentos, deslize para os lados">
         {tratamentos.map((t, i) => (
           <Link key={t.slug} href={`/tratamentos/${t.slug}/`} className="group block w-[78vw] max-w-[380px] shrink-0 snap-start overflow-hidden rounded-3xl border hairline bg-forest-950/50 sm:w-[340px]">
             <div className="aspect-[4/3] overflow-hidden"><Img name={t.arte} alt="" className="transition-transform duration-[1.4s] ease-out md:group-hover:scale-[1.07]" sizes="(min-width: 640px) 340px, 78vw" w={900} h={1125} /></div>
@@ -107,6 +111,7 @@ export function Tratamentos() {
           </Link>
         ))}
       </div>
+      <div className="mx-5 mt-6 h-px bg-champagne-500/20 md:mx-[6vw]" aria-hidden><span ref={bar} className="block h-px origin-left bg-champagne-500" style={{ transform: "scaleX(.18)" }} /></div>
     </section>
   );
 }
@@ -115,6 +120,7 @@ export function Tecnologia() {
   const itens = [["Avaliação antes de qualquer procedimento.", "Nenhuma indicação nasce de um pacote pronto."], ["Tecnologia a serviço do diagnóstico, não o contrário.", "O aparelho é escolhido para a sua pele, não a pele para o aparelho."], ["Acompanhamento depois.", "Retornos e ajustes fazem parte do tratamento."]];
   return (
     <section data-theme="dark" className="sec-r bg-flow cv px-5 pb-24 pt-20 text-sand-100 md:px-[6vw] md:pb-36 md:pt-36">
+      <FlowBg />
       <div className="grid items-center gap-14 md:grid-cols-12">
         <div className="md:col-span-7">
           <p className="eyebrow text-champagne-500">Tecnologia</p>
@@ -131,40 +137,10 @@ export function Tecnologia() {
         <div className="md:col-span-5" data-rv="fade">
           {/* TODO: vídeo curto em loop (equipamento sem marca / macro de pele) quando houver material do Instagram */}
           <div className="arch relative mx-auto aspect-[3/4] max-w-md border hairline">
-            <Img name="espaco-4" alt="" sizes="(min-width: 768px) 30vw, 90vw" />
-            <p className="absolute inset-x-0 bottom-8 text-center font-serif text-lg italic text-champagne-300">Microtopografia da pele</p>
+            <div className="par h-full"><Img name="tecnologia" alt="" sizes="(min-width: 768px) 30vw, 90vw" /></div>
+            <p className="absolute inset-x-0 bottom-8 text-center font-serif text-lg italic text-champagne-300">Tecnologia a serviço do diagnóstico</p>
           </div>
         </div>
-      </div>
-    </section>
-  );
-}
-
-export function PrimeiraConsulta() {
-  const ref = useRef<HTMLOListElement>(null);
-  const passos = [["Você agenda pelo site.", "Em cerca de um minuto, com o assistente. A recepção confirma o horário."], ["Conversa e avaliação com o Dr. Leonardo.", "Escuta, exame da pele e esclarecimento de dúvidas, sem pressa."], ["Plano de cuidado explicado com clareza.", "O que faz sentido para você, o que não faz, e por quê."], ["Acompanhamento.", "Retornos para ajustar o plano quando necessário."]]; // TODO ajustar com a clínica
-  useEffect(() => {
-    const io = new IntersectionObserver((es) => es.forEach((e) => e.target.classList.toggle("is-on", e.isIntersecting || e.boundingClientRect.top < 0)), { rootMargin: "0px 0px -38% 0px" });
-    ref.current?.querySelectorAll("li").forEach((li) => io.observe(li));
-    return () => io.disconnect();
-  }, []);
-  return (
-    <section data-theme="light" className="sec-r cv bg-ivory px-5 pb-24 pt-20 text-ink md:px-[6vw] md:pb-36 md:pt-36" aria-labelledby="pc-t">
-      <div className="grid gap-14 md:grid-cols-12">
-        <div className="md:sticky md:top-32 md:col-span-5 md:self-start">
-          <p className="eyebrow text-champagne-700">Sem surpresas</p>
-          <h2 id="pc-t" data-rv="fade" className="display h-lg mt-6">Como é a <em className="text-forest-700">primeira consulta.</em></h2>
-          <p data-rv="fade" className="lead mt-6 max-w-sm text-ink/75">Você entende cada etapa antes de decidir qualquer coisa. Ninguém sai com pacote empurrado.</p>
-        </div>
-        <ol ref={ref} className="md:col-span-6 md:col-start-7">
-          {passos.map(([t, d], i) => (
-            <li key={t} className="group relative grid grid-cols-[2.5rem_1fr] gap-6 pb-14 last:pb-0 [&.is-on_.dot]:bg-forest-700 [&.is-on_.dot]:text-ivory [&.is-on_.fill]:scale-y-100 [&.is-on_.txt]:opacity-100">
-              {i < passos.length - 1 && <span aria-hidden className="absolute left-[1.15rem] top-10 h-[calc(100%-2.5rem)] w-px bg-ink/12"><span className="fill block h-full w-px origin-top scale-y-0 bg-champagne-700 transition-transform duration-700" /></span>}
-              <span className="dot relative z-10 grid h-10 w-10 place-items-center rounded-full border border-forest-700/40 bg-ivory font-serif italic text-forest-700 transition-colors duration-500">{i + 1}</span>
-              <div className="txt opacity-45 transition-opacity duration-500"><h3 className="font-serif text-[clamp(1.6rem,2.4vw,2.3rem)] leading-tight">{t}</h3><p className="mt-2 text-ink/75">{d}</p></div>
-            </li>
-          ))}
-        </ol>
       </div>
     </section>
   );

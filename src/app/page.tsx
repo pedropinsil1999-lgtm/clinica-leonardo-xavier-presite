@@ -1,7 +1,8 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Reveals from "@/components/Reveals";
-import { Marquee, Manifesto, Portas, Tratamentos, Tecnologia, PrimeiraConsulta } from "@/components/Home1";
+import { Marquee, Manifesto, Portas, Tratamentos, Tecnologia } from "@/components/Home1";
+import PrimeiraConsulta from "@/components/PrimeiraConsulta";
 import { Sobre, Clinica, Aprenda, Duvidas, Avaliacoes, CTAFinal, Footer } from "@/components/Home2";
 import { clinica, PRESITE } from "@/data/clinica";
 
