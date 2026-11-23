@@ -76,21 +76,25 @@ export default function Assistente({ opts, onClose }: { opts: OpenOpts | null; o
   const urgente = s.interesses.includes(URGENTE);
   const recomendacao: Tipo | undefined = s.tri1 && s.tri2 ? (s.tri1 === "saude" || s.tri2 === "nao" ? "consulta" : "avaliacao") : undefined;
 
+  // Mensagem em primeira pessoa: o cliente se apresenta e conta o que respondeu na triagem.
   const mensagem = useMemo(() => {
-    const pref = [s.periodo && s.periodo !== "Sem preferência" ? s.periodo : null, s.dias.length ? s.dias.join(", ") : null].filter(Boolean).join(", ") || "Sem preferência";
-    const linhas = [
-      "Olá! Vim pelo site e quero agendar.",
-      `*Atendimento:* ${s.tipo ? LABEL[s.tipo] : "-"}`,
-      `*Interesse:* ${s.interesses.join("; ") || "-"}`,
-      `*Primeira vez na clínica:* ${s.primeira ?? "-"}`,
-      `*Preferência:* ${pref}`,
-      `*Quando:* ${s.quando ?? "-"}`,
-      ...(s.pagamento ? [`*Pagamento:* ${s.pagamento}`] : []),
-      `*Nome:* ${s.nome.trim() || "-"}`,
-      ...(s.tel.trim() ? [`*Meu WhatsApp:* ${s.tel.trim()}`] : []),
-      `Ref. site #${s.ref}`,
-    ];
-    return linhas.join("\n");
+    const lista = (a: string[]) => { const l = a.map((x) => x.toLowerCase()); return l.length > 1 ? `${l.slice(0, -1).join(", ")} e ${l[l.length - 1]}` : l[0] ?? ""; };
+    const nome = s.nome.trim();
+    const o = s.tipo === "consulta" ? "uma consulta dermatológica" : s.tipo === "avaliacao" ? "uma avaliação para procedimento estético" : "um atendimento";
+    const l: string[] = [`Olá! Meu nome é ${nome || "[nome]"}. Vim pelo site e gostaria de agendar ${o}.`];
+    const temas = s.interesses.filter((x) => x !== URGENTE);
+    if (temas.length) l.push(`O que me interessa: ${lista(temas)}.`);
+    if (s.interesses.includes(URGENTE)) l.push("Tenho uma pinta ou lesão que mudou e gostaria de receber atendimento o quanto antes.");
+    l.push(s.primeira === "Sim" ? "Será a minha primeira vez na clínica." : s.primeira === "Não" ? "Já estive na clínica antes." : "");
+    const per = s.periodo === "Manhã" ? "de manhã" : s.periodo === "Tarde" ? "à tarde" : "";
+    const dias = s.dias.map((d) => ({ seg: "segunda", ter: "terça", qua: "quarta", qui: "quinta", sex: "sexta" }[d] ?? d));
+    if (per || dias.length) l.push(`Prefiro ${per}${per && dias.length ? ", " : ""}${dias.length ? `nos dias: ${lista(dias)}` : ""}.`);
+    if (s.quando === "O quanto antes") l.push("Gostaria de agendar o quanto antes.");
+    else if (s.quando === "Nas próximas semanas") l.push("Gostaria de agendar nas próximas semanas.");
+    else if (s.quando) l.push("Por enquanto estou só pesquisando e queria entender melhor como funciona.");
+    if (s.pagamento) l.push(`Forma de atendimento: ${s.pagamento.toLowerCase()}.`);
+    l.push("Fico no aguardo e agradeço desde já!", `(Ref. site #${s.ref})`);
+    return l.filter(Boolean).join("\n");
   }, [s]);
 
   if (!isOpen) return null;
@@ -101,11 +105,11 @@ export default function Assistente({ opts, onClose }: { opts: OpenOpts | null; o
     !!s.tipo && (s.tipo !== "naosei" || !!recomendacao),
     s.interesses.length > 0,
     !!s.primeira && !!s.quando && (clinica.atendeConvenio === undefined || !!s.pagamento),
-    s.nome.trim().length > 1 && s.aceite,
+    s.nome.trim().length > 1,
   ][s.step];
 
   const enviar = () => {
-    const txt = s.msg ?? mensagem;
+    const txt = mensagem;
     track("assistente_concluido", { tipo: s.tipo ?? "", categoria: s.interesses[0] ?? "" });
     track("whatsapp_clique", { secao: "assistente" });
     // submitLead(): ponto de extensão para a Fase 2 (agenda em tempo real). Hoje só abre o WhatsApp.
@@ -188,21 +192,15 @@ export default function Assistente({ opts, onClose }: { opts: OpenOpts | null; o
             </fieldset>
           </>)}
 
-          {s.step === 3 && (<>
-            <h2 className="display h-md text-ivory">Quase <em className="text-champagne-500">pronto.</em></h2>
-            <label className="mt-8 block text-sm text-champagne-300" htmlFor="ass-nome">Seu nome</label>
-            <input id="ass-nome" data-opt value={s.nome} onChange={(e) => up({ nome: e.target.value, msg: undefined })} autoComplete="given-name" className="mt-2 h-14 w-full rounded-2xl border border-champagne-500/40 bg-forest-950/40 px-4 font-serif text-2xl outline-none focus:border-champagne-500" />
-            <label className="mt-6 block text-sm text-champagne-300" htmlFor="ass-tel">Seu WhatsApp (opcional, só para retorno)</label>
-            <input id="ass-tel" data-opt value={s.tel} onChange={(e) => up({ tel: e.target.value, msg: undefined })} inputMode="tel" autoComplete="tel" className="mt-2 h-14 w-full rounded-2xl border border-champagne-500/40 bg-forest-950/40 px-4 text-lg outline-none focus:border-champagne-500" />
-            <label data-opt className="mt-6 flex cursor-pointer items-start gap-3 text-sm opacity-90">
-              <input type="checkbox" checked={s.aceite} onChange={(e) => up({ aceite: e.target.checked })} className="mt-1 h-5 w-5 accent-[#C8B08A]" />
-              <span>Concordo em enviar estes dados à clínica pelo WhatsApp. Nada fica salvo neste site. <a href="/privacidade/" className="ulink text-champagne-300" target="_blank">Privacidade</a></span>
-            </label>
-            <details data-opt className="mt-8 border-t hairline pt-5" open>
-              <summary className="cursor-pointer text-sm text-champagne-300">Veja o que vamos enviar (você pode editar)</summary>
-              <textarea value={s.msg ?? mensagem} onChange={(e) => up({ msg: e.target.value })} rows={9} aria-label="Mensagem para a clínica" className="mt-3 w-full resize-none rounded-2xl border border-champagne-500/25 bg-forest-950/50 p-4 font-mono text-[0.8rem] leading-relaxed outline-none focus:border-champagne-500" />
-            </details>
-          </>)}
+          {s.step === 3 && (
+            <form onSubmit={(e) => { e.preventDefault(); if (pode) enviar(); }}>
+              <h2 className="display h-md text-ivory">Como podemos te <em className="text-champagne-500">chamar?</em></h2>
+              <p className="mt-3 text-sm text-sand-100/75">Seu nome vai na mensagem para a clínica saber com quem está falando.</p>
+              <label className="sr-only" htmlFor="ass-nome">Seu nome</label>
+              <input id="ass-nome" data-opt value={s.nome} onChange={(e) => up({ nome: e.target.value })} autoComplete="given-name" enterKeyHint="send" placeholder="Seu nome" className="mt-8 h-16 w-full rounded-2xl border border-champagne-500/40 bg-forest-950/40 px-5 font-serif text-3xl text-ivory outline-none placeholder:text-sand-100/35 focus:border-champagne-500" />
+              <p data-opt className="mt-6 text-xs leading-relaxed text-sand-100/60">Ao enviar, abrimos o seu WhatsApp com uma mensagem pronta para a clínica. Nada fica salvo neste site. <a href="/privacidade/" className="ulink text-champagne-300" target="_blank">Privacidade</a></p>
+            </form>
+          )}
 
           {s.step === 4 && (<>
             <h2 className="display h-md text-ivory">Mensagem <em className="text-champagne-500">pronta.</em></h2>
@@ -211,7 +209,7 @@ export default function Assistente({ opts, onClose }: { opts: OpenOpts | null; o
               <p className="text-sm text-champagne-300">Não abriu o WhatsApp?</p>
               <p className="mt-1">Envie para <a className="ulink" href={`tel:+${clinica.whatsapp}`}>{clinica.telefone}</a></p>
               <button className="mt-4 min-h-12 rounded-full border border-champagne-500 px-5 text-sm hover:bg-champagne-500 hover:text-forest-950"
-                onClick={async () => { try { await navigator.clipboard.writeText(s.msg ?? mensagem); setCopiado(true); } catch {} }}>{copiado ? "Copiada ✓" : "Copiar mensagem"}</button>
+                onClick={async () => { try { await navigator.clipboard.writeText(mensagem); setCopiado(true); } catch {} }}>{copiado ? "Copiada ✓" : "Copiar mensagem"}</button>
             </div>
             <div className="mt-6">
               <p className="text-sm text-champagne-300">Para agilizar sua consulta</p>

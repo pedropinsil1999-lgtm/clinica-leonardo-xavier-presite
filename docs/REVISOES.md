@@ -81,3 +81,9 @@ Erros corrigidos: (1) a foto estava recortada DENTRO do arco (cabeça cortada) q
 - Arco agora é uma camada de fundo; a foto é uma camada separada, sem `overflow:hidden`, centralizada, com a cabeça no topo do arco.
 - Grid `1fr + auto` impede o texto de invadir a foto; título com `clamp(2.6rem, 4.6vw, 5rem)`.
 - Verificado por medição (getBoundingClientRect) em 1868, 1440, 1280, 1024, 768, 390 e 360 px: sem sobreposição e sem scroll horizontal.
+
+## Rodada 10: assistente, passo 4 simplificado
+- Passo 4 agora pede só o nome (campo grande, Enter envia). Removidos WhatsApp do cliente, checkbox de consentimento e caixa de texto editável; nota curta de privacidade abaixo (o consentimento é o próprio ato de enviar).
+- A mensagem é escrita em primeira pessoa: o cliente se apresenta e relata a triagem ("Olá! Meu nome é Maria. Vim pelo site e gostaria de agendar... O que me interessa: ... Será a minha primeira vez... Prefiro à tarde, nos dias: terça e quinta... Fico no aguardo e agradeço desde já! (Ref. site #XXXX)"). Texto neutro quanto a gênero.
+- Pinta/lesão que mudou vira uma frase de prioridade na mensagem.
+- Testado ponta a ponta (estética e consulta/urgente): destino wa.me/5524992482326 e botão desabilitado até haver nome.
