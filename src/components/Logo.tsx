@@ -22,7 +22,7 @@ export function Lockup({ className, color = "currentColor", vertical = false }: 
     <span className={`inline-flex items-center gap-3 ${vertical ? "flex-col" : ""} ${className ?? ""}`} style={{ color }}>
       <Monogram className={vertical ? "h-16 w-16" : "h-9 w-9"} />
       <span className={`flex flex-col leading-none ${vertical ? "items-center" : ""}`}>
-        <span className="font-serif text-[0.95rem] tracking-[0.28em] uppercase">Dr. Leonardo Xavier</span>
+        <span className="whitespace-nowrap font-serif text-[0.78rem] tracking-[0.2em] uppercase sm:text-[0.95rem] sm:tracking-[0.28em]">Dr. Leonardo Xavier</span>
         <span className="mt-1 text-[0.55rem] tracking-[0.5em] uppercase opacity-70">Clínica</span>
       </span>
     </span>

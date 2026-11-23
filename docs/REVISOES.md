@@ -69,3 +69,9 @@ Resultado: Lighthouse celular Performance 91, A11y 96, Boas práticas 100, CLS 0
 - Interativo: brilhos se deslocam com o ponteiro (mouse) ou toque (variáveis CSS `--mx/--my`, 1 atualização por quadro) e um halo quente segue o cursor.
 - Hero mais limpa: só título + botão + chip da nota 5,0. Removidos "XAVIER" gigante, eyebrow e chip "+10 anos".
 - Medição (celular simulado, CPU 6x mais lenta, hero parada): 16,7 ms/quadro com e sem animação.
+
+## Rodada 8: hero no estilo da referência (clara, arco, cartão-pílula)
+- Hero clara e quente (marfim + brilho champagne + grão fino), texto à esquerda, 3 números em linha (+10 anos, 5,0★, 166 avaliações), cartão-pílula "Por onde começar?" que abre o assistente, e o Dr. Leonardo num arco verde-floresta com moldura champagne.
+- Seção seguinte (faixa de especialidades) virou escura com cantos arredondados, para contrastar com a hero clara.
+- Header começa em tema claro; logo menor em telas pequenas.
+- A "noite granulada" ficou no CSS (`.hero-night`), sem uso no momento.

@@ -131,3 +131,12 @@ section[id] { scroll-margin-top: 4.5rem; }
 .n-grain { position: absolute; inset: 0; background: url(/midia/grao.png) repeat; background-size: 140px; opacity: .3; }
 .n-vig { position: absolute; inset: 0; background: radial-gradient(75% 65% at 55% 45%, transparent 45%, rgba(2,10,10,.7) 100%); }
 @media (prefers-reduced-motion: reduce) { .n-p b, .n-stars { animation: none !important; } .n-stars { opacity: .5; } .n-p { transition: none; } }
+
+/* Hero clara e quente: marfim, brilhos champagne/jade bem suaves, grão fino e arco verde */
+.hero-warm { position: relative; isolation: isolate; background: radial-gradient(80% 70% at 78% 18%, #F6ECDB 0%, transparent 60%), linear-gradient(180deg, #F8F4ED 0%, #EFE7DB 100%); }
+.hw-p1 { --k: -40px; right: -22%; top: -30%; } .hw-p1 b { background: radial-gradient(closest-side, rgba(200,176,138,.40), transparent); animation: drift1 40s ease-in-out infinite alternate; }
+.hw-p2 { --k: 30px; left: -30%; top: 34%; width: 70vmax; height: 70vmax; } .hw-p2 b { background: radial-gradient(closest-side, rgba(47,138,115,.12), transparent); animation: drift2 50s ease-in-out infinite alternate; }
+.hero-warm .hero-cursor-glow { background: radial-gradient(closest-side, rgba(200,176,138,.30), transparent); }
+.hero-arch-wrap { width: min(86vw, 420px); aspect-ratio: .8; padding: 10px; border-radius: 999px 999px 0 0; background: linear-gradient(180deg, #E3D5BF, #C8B08A 60%, #B98F62); box-shadow: 0 30px 60px -30px rgba(8,33,29,.45); }
+.hero-arch { position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: 999px 999px 0 0; background: linear-gradient(170deg, #1F5A4E 0%, #17483F 45%, #0C2E29 100%); }
+@media (min-width: 768px) { .hero-arch-wrap { width: auto; height: min(88svh, 52vw, 820px); } }

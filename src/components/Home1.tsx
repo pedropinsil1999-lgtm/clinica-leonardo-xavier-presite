@@ -12,7 +12,8 @@ const Losango = () => <span aria-hidden className="mx-8 inline-block h-2 w-2 rot
 export function Marquee() {
   const items = ["Dermatologia", "Estética avançada", "Laser", "Toxina botulínica", "Bioestimulador de colágeno", "Limpeza de pele", "Cirurgia dermatológica"];
   return (
-    <section data-theme="light" className="marquee sec-r z-10 overflow-hidden bg-ivory pb-8 pt-14 text-forest-900 md:pt-20" aria-label="Especialidades">
+    <section data-theme="dark" className="marquee sec-r bg-flow z-10 overflow-hidden pb-8 pt-14 text-champagne-300 md:pt-20" aria-label="Especialidades">
+      <FlowBg />
       <div className="marquee-track flex w-max whitespace-nowrap">
         {[0, 1].map((k) => (
           <div key={k} className="flex items-center font-serif text-[clamp(2rem,4.4vw,4.4rem)] font-light italic" aria-hidden={k === 1}>
@@ -28,7 +29,7 @@ export function Manifesto() {
   const partes: [string, boolean][] = [["Pele é saúde antes de ser estética. Por isso toda avaliação começa por ", false], ["entender você,", true], [" com critério médico e tecnologia de ponta.", false]];
   let n = 0;
   return (
-    <section data-theme="light" className="bg-ivory px-5 pb-24 pt-10 text-ink md:px-[6vw] md:pb-36 md:pt-16">
+    <section data-theme="light" className="sec-r bg-ivory px-5 pb-24 pt-16 text-ink md:px-[6vw] md:pb-36 md:pt-24">
       <p className="eyebrow mb-10 text-champagne-700">Nosso ponto de partida</p>
       <div className="grid gap-14 md:grid-cols-12">
         <p className="display h-lg md:col-span-8">

@@ -8,7 +8,7 @@ const LINKS = [["Tratamentos", "/#tratamentos"], ["Sobre", "/#sobre"], ["A clín
 
 export default function Header() {
   const { open } = useAgendar();
-  const [dark, setDark] = useState(true);
+  const [dark, setDark] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [menu, setMenu] = useState(false);
   const [solid, setSolid] = useState(false);
