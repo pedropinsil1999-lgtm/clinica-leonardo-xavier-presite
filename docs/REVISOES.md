@@ -63,3 +63,9 @@ Resultados: JS da home 175 → 122 kB. Lighthouse mobile: Performance 89–93 (a
 - "Sem surpresas" virou stepper interativo: etapas tocáveis, cartão "Você / A gente", avanço automático com barra de progresso (só visível e sem interação), swipe no celular, botões anterior/próximo e CTA.
 - Carrossel de tratamentos com barra de progresso de rolagem.
 Resultado: Lighthouse celular Performance 91, A11y 96, Boas práticas 100, CLS 0, TBT 190 ms; rolagem a 60 fps com CPU 6x mais lenta.
+
+## Rodada 7: hero "noite granulada"
+- Hero: removidas as curvas de nível (continuam nas outras seções escuras). Novo fundo: gradiente verde-noite + 2 brilhos (jade e champagne) à deriva + 2 camadas de estrelas que cintilam (opacity) + vinheta + grão neutro (PNG 30 kB).
+- Interativo: brilhos se deslocam com o ponteiro (mouse) ou toque (variáveis CSS `--mx/--my`, 1 atualização por quadro) e um halo quente segue o cursor.
+- Hero mais limpa: só título + botão + chip da nota 5,0. Removidos "XAVIER" gigante, eyebrow e chip "+10 anos".
+- Medição (celular simulado, CPU 6x mais lenta, hero parada): 16,7 ms/quadro com e sem animação.
